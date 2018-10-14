@@ -1,0 +1,12 @@
+1) Go to the project directory:
+/Users/andreasslovacek/OneDrive/Classes, Books, & Learning/UCCS/CS5700_Automatat.Complexity.Computability/PJ03
+
+2) Compile the project with:
+>> mvn compile
+
+3) To run the program with input test.jack in the PJ03 directory run the following command.  This command
+specifies the classpath directory the fully qualified package name with class, and the input file:
+>> java -cp target/classes/ com.jackanalyzer.Main test.jack
+
+4) To run the tests in JackAnalyzer_Test.JackAnalyzer_Test use the following command.  
+>> mvn clean test -Dtest=JackAnalyzer_Test.JackAnalyzer_Test -Dsurefire.useFile=false
