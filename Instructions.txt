@@ -1,5 +1,5 @@
 1) Go to the project directory:
-/Users/andreasslovacek/OneDrive/Classes, Books, & Learning/UCCS/CS5700_Automatat.Complexity.Computability/PJ03
+>> cd ~/OneDrive/Classes\,\ Books\,\ \&\ Learning/UCCS/CS5700_Automatat.Complexity.Computability/PJ03/
 
 2) Compile the project with:
 >> mvn compile
