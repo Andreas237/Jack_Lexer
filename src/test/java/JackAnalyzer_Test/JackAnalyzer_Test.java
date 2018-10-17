@@ -42,7 +42,9 @@ public class JackAnalyzer_Test {
 	@BeforeAll
 	public static void testSetup() {
 		// tester = new JackAnalyzer();
+		String fin = "test.jack";
 		testFile = FileSystems.getDefault().getPath("../../../../.", "test.jack");
+		tester = new JackAnalyzer(fin);
 		// testFileStr = testFile.toString() ;
 		testFileStr = "empty.jack";
 		//testFile = "/Users/andreasslovacek/OneDrive/Classes, Books, & Learning/UCCS/CS5700_Automatat.Complexity.Computability/PJ03/test.jack";
@@ -54,10 +56,9 @@ public class JackAnalyzer_Test {
 	
 	// Unit test for opening the file passed from CLI
 	/*
-	 * The file is opened, and the pointer returned.
-	 * Test Asserts that the file pointer is was returned and is open
+	 * Check that the contents of the array aren't null 
 	 */
 	@Test
-	public void testSetFilePointer(){  assertNotNull( tester.setInFilePointer(testFileStr) ) ; }
+	void getJackContent_Test(){ assertNotNull(tester.getJackContent());}
 
 }// end public class JackAnalyzer_Test 

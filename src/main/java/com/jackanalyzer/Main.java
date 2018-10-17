@@ -1,11 +1,11 @@
 package com.jackanalyzer;
 
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 
 
@@ -33,9 +33,26 @@ class Main {
 		
 		// If the the infile exists run the simulation
 		JackAnalyzer ja = new JackAnalyzer(args[0]);
+		ja.tokenCount("int".getBytes());
 		
 		
-
+		
+		//TODO: remove this junk
+		/*
+		byte [] sa, sb;
+		byte [] a = {'t','r','u','e'};
+		byte [] b = "true".getBytes();
+		
+		sa = Arrays.copyOfRange(a, 0, 0);
+		sb = Arrays.copyOfRange(b, 0, 0);
+		System.out.println("Comparing bytes: ");
+		System.out.println( Arrays.equals(sa, sb));
+		System.out.println( Arrays.equals(a,b));
+		*/
+		char c = (char)( (byte)(96) & 0xFF);
+		System.out.println(c);
+		
+		
 	}// end public static void Main(String[] args)
 
 }// end class Main

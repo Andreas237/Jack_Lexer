@@ -7,6 +7,7 @@ package com.jackanalyzer;
 import lombok.Data;
 import lombok.Getter;
 import java.util.HashMap;
+import java.util.Set;
 
 
 
@@ -17,8 +18,8 @@ import java.util.HashMap;
 @Data
 class Keywords {
 	
-	@Getter
-	private HashMap Categories ;
+	@Getter private HashMap Categories;
+	@Getter private Set		Discards;
 	
 	
 	// Setup the hashmap of <BytePatter, KeywordName>  
@@ -223,6 +224,30 @@ class Keywords {
 		byter 		= new Byte[] 	{'<','>','|','&','/', '*','+'};
 		Categories.put(byter, "SY_OP");
 		
+		
+		//============================================================
+		//				Discards
+		//============================================================
+		
+		//==== EOL ====
+		/*
+		byter 		= new Byte[] 	{'\n','\r'};
+		Discards.add(byter);
+		*/
+		
+		
+		//==== COMMENT_EOL ====
+		/*
+		byter 		= new Byte[] 	{'/'+'/'};
+		Discards.add(byter);
+		*/
+		
+		
+		//==== COMMENT_BLK ====
+		/*
+		byter 		= new Byte[] 	{'/'+'*','*'+'/'};
+		Discards.add(byter);
+		*/
 		
 
 	}// end Keywords() 
