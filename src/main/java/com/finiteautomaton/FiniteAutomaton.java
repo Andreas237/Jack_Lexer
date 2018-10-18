@@ -1,31 +1,37 @@
 package com.finiteautomaton;
 
 
-import lombok.Data;
-import java.util.Set;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
+import lombok.Data;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.commons.lang3.StringUtils;
 
-///< Finite Automaton (FA)
+
+
+
+
+
+
+///< Finite Automaton (FiniteAutomaton)
 /**
  * @author andreasslovacek
  * This class implements States, Alphabet, Transitions, and validity of a finite automaton
  */
 @Data
-public class FA {
+class FiniteAutomaton {
+
 	
-    private Set<Byte> alphabet;							///< Sigma alphabet
+	private Set<Byte> alphabet;							///< Sigma alphabet
     private Set <State> states;							///< Q states
     private HashMap<Transition,Set<State>> transitions;	///< delta transition table QxSigma->Q
     private State startState;							///< q0 start state
     private Set <State> acceptStates;					///< F accept states
-    private Gson GSON;							///< JSON representation of the class
+    private Gson GSON;									///< JSON representation of the class
     private boolean isValid;							///< Is this machine valid?
-    private String type;								///< Default FA type is DFA
+    private String type;								///< Default FiniteAutomaton type is DFA
 	
 	
 	
@@ -40,7 +46,7 @@ public class FA {
     /*!
      * Initialize the Finite Automaton with empty sets and default values.
      */
-    public FA(){
+    public FiniteAutomaton(){
         
     	this.acceptStates = new HashSet<State>();
         this.alphabet = new HashSet<Byte>();
@@ -51,7 +57,27 @@ public class FA {
         this.transitions = new HashMap<Transition, Set<State>>();
         this.type = "DFA";
         
-    }// end public FA()  
+    }// end public FiniteAutomaton()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< acceptStatesToString
+    public String acceptStatesToString(){
+   
+    	StringBuilder sb = new StringBuilder();
+   
+    	for(State s: acceptStates)
+    		sb.append(s.state + " ");
+    	
+    	return sb.toString();
+    }// end public String acceptStatesToString() 
 	
 	
 	
@@ -64,7 +90,7 @@ public class FA {
 	
 	///< addTransition
     /*!
-     * Create the transition table for the FA.  If the transition
+     * Create the transition table for the FiniteAutomaton.  If the transition
      * already exists add it with the the new final state
      */
     private void addTransition( State startState, State finalState, Byte symbol){
@@ -153,14 +179,19 @@ public class FA {
     	StringBuilder sb = new StringBuilder();
     	
     	// Append States
-    	sb.append("states:" + statesToString() + "\n");
+    	sb.append("states: " + statesToString() + "\n");
     	// Append Alphabet
-    	sb.append("alphabet:" + alphabetToString() + "\n");
+    	sb.append("alphabet: " + alphabetToString() + "\n");
     	// Append Transitions
-    	// Print something like :{start state, symbol, [final states]
+    	sb.append("transitions:\n" + transitionsToString());
     	// Append Start State
+    	sb.append("start state: " + startState.state + "\n");
     	// Append Accept States
+    	sb.append("accept states: " + acceptStatesToString() + "\n");
     	// Append Type
+    	sb.append("type: " + this.getType() + "\n");
+    	
+    	System.out.println( sb.toString() );
     	
     }// end public void printStringSelf()
 	
@@ -177,7 +208,7 @@ public class FA {
     /*!
      * Set isValid based on input IF we are not in a trap state
      */
-    public void setIsValid(boolean in/**<Validity of the FA>*/){
+    public void setIsValid(boolean in/**<Validity of the FiniteAutomaton>*/){
     	if( this.isValid == true)
     		this.isValid = in;
     }// end public void setIsValid(boolean in) 
@@ -193,7 +224,7 @@ public class FA {
 	
 	///< setType
     /*!
-     * Set the type of the FA based on the transition table
+     * Set the type of the FiniteAutomaton based on the transition table
      */
     public void setType(){
     	
@@ -255,10 +286,17 @@ public class FA {
 	
 	
 	///< transitionsToString
-    public String transitionsToString(){
+    /*!
+     * Build an output with all the entries in the transition table of the form:
+     * initialState1,symbol,[finalState11,finalState12,...]
+     * initialState2,symbol,[finalState21,finalState22,...]
+     * @return The string containing all entries in the transition table
+     */	
+    private String transitionsToString(){
     	
-    	StringBuilder sb = new StringBuilder();
-    	StringBuilder finalStates = new StringBuilder();
+    	StringBuilder sb = new StringBuilder();				// String to return
+    	StringBuilder finalStates = new StringBuilder("[");	// Final States string, reset after every transition
+    	int count = 0;										// indexer for final string
     	
     	// For every startState and symbol get an array of the transitions
     	for( Transition t : transitions.keySet()){
@@ -268,9 +306,22 @@ public class FA {
     		String symbol = new String(byteArray);
     		
     		// get the finalState for this transition
-    		for(State s: transitions.get(t)) 
-    			finalStates.append(s.state+",");
-    		//TODO: finish building output string that will be: start,symbol,[final states]
+    		// format the string with commas and brackets as needed
+    		count = 0;// reset count for each transition
+    		for(State s: transitions.get(t)){
+    			if(count > 0)
+    				finalStates.append(" ");
+    			finalStates.append(s.state);
+    			count++;
+    		}// end for(State s: transitions.get(t))
+    		count = finalStates.lastIndexOf(" "); // reuse count to hold the place of the last comma
+    		
+    		
+    		finalStates.append("]"); // 
+    		
+    		finalStates.delete(count, count);
+    		
+    		sb.append(t.currentState.state + "," + symbol + "," + finalStates + "\n" );
     		
     	}// end for( State s : states)
     	
@@ -279,4 +330,4 @@ public class FA {
     	
     }// end public String transitionsToString() 
     
-}// end public class FA 
+}// end public class FiniteAutomaton 

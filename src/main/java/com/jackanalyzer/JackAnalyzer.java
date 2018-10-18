@@ -78,7 +78,7 @@ public class JackAnalyzer extends Keywords {
 		 * Instead use byte ops.
 		 * Can I make a map of {(byte:char),(keyword)} and use same read
 		 * and classify method as I did at CSUEB?
-		 * FA Sim -> first read, then determine states at each KW
+		 * FiniteAutomaton Sim -> first read, then determine states at each KW
 		 */
 		
 		
