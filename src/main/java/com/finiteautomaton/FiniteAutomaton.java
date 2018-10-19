@@ -24,14 +24,16 @@ import org.apache.commons.lang3.StringUtils;
 class FiniteAutomaton {
 
 	
-	private Set<Byte> alphabet;							///< Sigma alphabet
-    private Set <State> states;							///< Q states
-    private HashMap<Transition,Set<State>> transitions;	///< delta transition table QxSigma->Q
-    private State startState;							///< q0 start state
-    private Set <State> acceptStates;					///< F accept states
-    private Gson GSON;									///< JSON representation of the class
-    private boolean isValid;							///< Is this machine valid?
-    private String type;								///< Default FiniteAutomaton type is DFA
+	private Set<Byte> alphabet;								///< Sigma alphabet
+    private Set <State> states;								///< Q states
+    protected HashMap<Transition,Set<State>> transitions;	///< delta transition table QxSigma->Q
+    private State startState;								///< q0 start state
+    private Set <State> acceptStates;						///< F accept states
+    private Gson GSON;										///< JSON representation of the class
+    private boolean acceptStatus;							///< Accept status of the FA given an input string
+    private boolean isValid;								///< Is this machine valid?
+    private String type;									///< Default FiniteAutomaton type is DFA
+    private Integer finalState;								///< Final state of the machine							
 	
 	
 	
@@ -140,6 +142,18 @@ class FiniteAutomaton {
     	return outStr.toString();
     	
     }// end public String alphabetToString()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< getAcceptStatus
+	public boolean getAcceptStatus() { return this.acceptStatus;}
 	
 	
 	

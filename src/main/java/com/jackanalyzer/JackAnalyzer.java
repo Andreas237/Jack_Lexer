@@ -2,22 +2,12 @@ package com.jackanalyzer;
 
 
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.lang.Object; 
-
-import org.apache.commons.io.*;
-
-
 //Autogen functions
 import lombok.Data;
 import lombok.Getter;
@@ -29,7 +19,7 @@ import lombok.Getter;
  * along with the requirements for PJ03. 
  */
 @Data
-public class JackAnalyzer extends Keywords {
+public class JackAnalyzer extends Tokenizer {
 
 	
 	private String inFileName;					///< File name for writing
@@ -49,11 +39,11 @@ public class JackAnalyzer extends Keywords {
 	/*!
 	 * Run the JackAnanlyzer class on an input file
 	 */
-	public JackAnalyzer( String fin /**<Input filename to be passed from the command line>*/) {
+	public JackAnalyzer(String fin /**<Input filename to be passed from the command line>*/) {
 		
 		///< Open the jack file for reading, error if incorrect file type
 		this.jackContent = this.fileToBytes(fin);
-		if( getJackContent() == null)
+		if(getJackContent() == null)
 			System.out.println("Failed to read anything from " + fin);
 		else{
 			System.out.println("read a file");
@@ -62,7 +52,7 @@ public class JackAnalyzer extends Keywords {
 		
 		
 		
-		setInFileName(fin.replace(".jack", "") );	///< set the inFileName
+		setInFileName(fin.replace(".jack", ""));	///< set the inFileName
 		
 		
 		removeExistingOutputFile();					///< Delete existing output file if it exists
@@ -117,7 +107,7 @@ public class JackAnalyzer extends Keywords {
 		byte [] inBytes = null;
 		
 		///< Only files of type jack allowed
-		if( !fin.endsWith(".jack") ){
+		if(!fin.endsWith(".jack")){
 			System.out.println("ERROR: Input file must be of type .jack");
 			System.exit(1);
 		}
@@ -157,10 +147,10 @@ public class JackAnalyzer extends Keywords {
 	private void removeExistingOutputFile(){
 		
 		File f = new File(this.inFileName + ".xml");
-		if( f.exists() ){
-			if( !f.delete() )
+		if(f.exists()){
+			if(!f.delete())
 				System.out.println("WARNING: Could not delete " + this.inFileName + ".xml");
-		}///< end if( f.exists() )
+		}///< end if(f.exists())
 		else
 			System.out.println("WARNING: " + f.getName() + " DOES NOT exists.");
 		
@@ -181,7 +171,7 @@ public class JackAnalyzer extends Keywords {
 	protected FileWriter setOutFilePointer(){
 		FileWriter fw = null;
 		try{
-			fw = new FileWriter( getInFileName() + ".xml" );
+			fw = new FileWriter(getInFileName() + ".xml");
 			return fw;
 		}
 		catch(IOException e) {
@@ -212,12 +202,12 @@ public class JackAnalyzer extends Keywords {
 				
 		
 		///< Find the start of tokenCheck
-		for( int i = 0; i < this.jackContent.length; i++){
-			if( this.jackContent[i] == tokenCheck[0]){
-				if( tokenWordCheck(tokenCheck, Arrays.copyOfRange(this.jackContent, i, i + tokenCheckLength)) )
+		for(int i = 0; i < this.jackContent.length; i++){
+			if(this.jackContent[i] == tokenCheck[0]){
+				if(tokenWordCheck(tokenCheck, Arrays.copyOfRange(this.jackContent, i, i + tokenCheckLength)))
 					count++;
-			}///< end if( this.jackContent[i] == tokenCheck[0])
-		}///< end for( int i = 0; i < this.jackContent.length; i++)
+			}///< end if(this.jackContent[i] == tokenCheck[0])
+		}///< end for(int i = 0; i < this.jackContent.length; i++)
 		
 		
 		return count;
@@ -266,13 +256,13 @@ public class JackAnalyzer extends Keywords {
 		
 		
 		///< If tokenIn has no more characters then it has been fully checked
-		if( tokenIn.length == 0 )
+		if(tokenIn.length == 0)
 			return true;
 		
 		///< Compare whether the first characters match
 		///< If so compare the rest of the word, else false
-		if( tokenIn[0] == arrayIn[0])
-			return tokenWordCheck( Arrays.copyOfRange(tokenIn,1,tokenIn.length), 
+		if(tokenIn[0] == arrayIn[0])
+			return tokenWordCheck(Arrays.copyOfRange(tokenIn,1,tokenIn.length), 
 								   Arrays.copyOfRange(arrayIn,1,tokenIn.length)); 
 		else
 			return false;

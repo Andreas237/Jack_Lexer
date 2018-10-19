@@ -16,14 +16,14 @@ import java.util.Set;
  * This class generates the byte byterings for every keyword
  */
 @Data
-class Keywords {
+public class Tokenizer {
 	
 	@Getter private HashMap Categories;
 	@Getter private Set		Discards;
 	
 	
 	// Setup the hashmap of <BytePatter, KeywordName>  
-	Keywords(){
+	Tokenizer(){
 		
 		Categories = new HashMap<Byte[],String>();
 		Byte[] byter ;
@@ -250,6 +250,6 @@ class Keywords {
 		*/
 		
 
-	}// end Keywords() 
+	}// end Tokenizer() 
 
-}// end class Keywords
+}// end class Tokenizer

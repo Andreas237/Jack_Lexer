@@ -8,7 +8,7 @@ import lombok.Data;
  * @author andreasslovacek
  * This class implements the functions needed for state operations
  * such as checking if trap/start, comparison and equality.
- * Implements the Comparable interface for simplicity.  
+ * Implements the Comparable interface for sorting later.  
  */
 @Data
 class State implements Comparable<State> {
