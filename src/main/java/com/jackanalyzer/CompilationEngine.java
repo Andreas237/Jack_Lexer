@@ -3,6 +3,7 @@ package com.jackanalyzer;
 import lombok.Data;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 ///< CompilationEngine
@@ -13,7 +14,10 @@ import java.util.ArrayList;
 public class CompilationEngine{
 
 	
-	ArrayList<String> files;		///< String file names
+	ArrayList<File> jackFiles;			///< Jack input file names
+	ArrayList<File> logFiles;			///< Log output file names
+	ArrayList<File> tokFiles;			///< Token output file names
+	ArrayList<String> files;			///< String input file names
 	ArrayList<String> inputStrings;	///< Read from file
 	
 
@@ -31,6 +35,9 @@ public class CompilationEngine{
 	 * Write the output files.
 	 */
 	public CompilationEngine(){
+		jackFiles = new ArrayList<File>();
+		logFiles = new ArrayList<File>();
+		tokFiles = new ArrayList<File>();
 		//TODO: setup filenames
 		setFiles();
 		//TODO: setup input/output file locations
@@ -48,15 +55,22 @@ public class CompilationEngine{
 
 
 	///< getAllFiles()
-	private File[] getAllFiles(File currentDir){
-		//TODO: File[] fileList should be an arrayList and in the case of directory append files
-		File[] fileList = currentDir.listFiles();
-        for(File f : fileList){
-            if(f.isDirectory()) 
-                getAllFiles(f);
-            if(f.isFile())
-                System.out.println(f.getName());
-        }// end for(File f : filesList)
+	/*!
+	 * Get all the files in the directory, and filter to .jack files
+	 * Commented out downward recursion
+	 */
+	private ArrayList<File> getAllJackFiles(File currentDir){
+		ArrayList<File> fileList = new ArrayList<File>(); 
+		File[] currentFiles = currentDir.listFiles();
+        for(File f : currentFiles){
+        	
+            if(f.getName().endsWith(".jack") && !f.getName().contains("test"))
+            	fileList.add(f);
+	    	// No need to recurse down
+	    	if(f.isDirectory()) 
+	    		fileList.addAll(getAllJackFiles(f));
+        }// end for(File f : currentFiles)
+        
         return fileList;
 	}// end void getAllFiles(File currentDir)
 	
@@ -69,12 +83,19 @@ public class CompilationEngine{
 
 	///< setFiles()
 	/*!
-	 * Add the file names
+	 * Create files for .tok and .log corresponding to the input jackfiles
 	 */
 	private void setFiles(){
-		File currentDir = new File("./JackFiles/");
-		File[] jackFiles;
-		getAllFiles(currentDir);
+		File currentDir = new File("./");
+		jackFiles = getAllJackFiles(currentDir);
+		
+		File temp;
+		for (File f : jackFiles){
+			temp = new File("./results/" + f.getName().replace(".jack", ".tok"));
+			tokFiles.add(temp);
+			temp = new File("./results/" + f.getName().replace(".jack", ".log"));
+			logFiles.add(temp);
+		}// end for (File f : jackFiles)
 		
 	}// end void setFiles()
 	
