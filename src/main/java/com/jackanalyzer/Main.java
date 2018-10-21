@@ -34,7 +34,6 @@ class Main {
 		JackAnalyzer ja = new JackAnalyzer(args[0]);
 		ja.tokenCount("int".getBytes());
 		
-		System.out.println("Try compiling");
 		CompilationEngine ce = new CompilationEngine();
 
 		

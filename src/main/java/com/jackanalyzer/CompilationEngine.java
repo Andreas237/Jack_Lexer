@@ -48,14 +48,16 @@ public class CompilationEngine{
 
 
 	///< getAllFiles()
-	private void getAllFiles(File currentDir){
-		File[] filesList = currentDir.listFiles();
-        for(File f : filesList){
-            if(f.isDirectory())
+	private File[] getAllFiles(File currentDir){
+		//TODO: File[] fileList should be an arrayList and in the case of directory append files
+		File[] fileList = currentDir.listFiles();
+        for(File f : fileList){
+            if(f.isDirectory()) 
                 getAllFiles(f);
             if(f.isFile())
                 System.out.println(f.getName());
         }// end for(File f : filesList)
+        return fileList;
 	}// end void getAllFiles(File currentDir)
 	
 
@@ -71,6 +73,7 @@ public class CompilationEngine{
 	 */
 	private void setFiles(){
 		File currentDir = new File("./JackFiles/");
+		File[] jackFiles;
 		getAllFiles(currentDir);
 		
 	}// end void setFiles()
