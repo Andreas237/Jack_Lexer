@@ -19,7 +19,7 @@ import lombok.Getter;
  * along with the requirements for PJ03. 
  */
 @Data
-public class JackAnalyzer extends Tokenizer {
+public class JackAnalyzer extends MachineDescription {
 
 	
 	private String inFileName;					///< File name for writing
@@ -41,13 +41,13 @@ public class JackAnalyzer extends Tokenizer {
 	 */
 	public JackAnalyzer(String fin /**<Input filename to be passed from the command line>*/) {
 		
-		///< Open the jack file for reading, error if incorrect file type
+		// Open the jack file for reading, error if incorrect file type
 		this.jackContent = this.fileToBytes(fin);
 		if(getJackContent() == null)
 			System.out.println("Failed to read anything from " + fin);
 		else{
 			System.out.println("read a file");
-		}///< end else
+		}// end else
 		
 		
 		
@@ -62,7 +62,7 @@ public class JackAnalyzer extends Tokenizer {
 			
 		
 		
-		///< Call the Compilation Engine
+		// Call the Compilation Engine
 		/*
 		 * Can't use regex/substrings
 		 * Instead use byte ops.
@@ -75,10 +75,10 @@ public class JackAnalyzer extends Tokenizer {
 		
 		
 		
-		///< Close the file pointers
+		// Close the file pointers
 		try {
 			this.outFile.close();
-		} ///< end try
+		} // end try
 		catch (IOException e) {
 			System.out.println("Caught an error closing file pointers");
 			e.printStackTrace();
@@ -106,7 +106,7 @@ public class JackAnalyzer extends Tokenizer {
 		File fr = null;
 		byte [] inBytes = null;
 		
-		///< Only files of type jack allowed
+		// Only files of type jack allowed
 		if(!fin.endsWith(".jack")){
 			System.out.println("ERROR: Input file must be of type .jack");
 			System.exit(1);
@@ -114,23 +114,23 @@ public class JackAnalyzer extends Tokenizer {
 		else
 			System.out.println("Input file is " + fin);
 		
-		///< Read all the bytes from the jackfile into the array
+		// Read all the bytes from the jackfile into the array
 		try{
 			fr = new File(fin);
 			inBytes = Files.readAllBytes(fr.toPath());
-		}///< end try
+		}// end try
 		catch (FileNotFoundException e){
 			System.out.println("ERROR: " + fin + "not found");
 			System.exit(1);
-		}//end catch (FileNotFoundException e)
+		}// end catch (FileNotFoundException e)
 		catch(IOException e){
 			System.out.println("ERROR: couldn't read all bytes from " + fin);
 			e.printStackTrace();
 			System.exit(1);
-		}///< end catch(IOException e)
+		}// end catch(IOException e)
 		
 		return inBytes;
-	} ///< end public byte[] fileToBytes(String fin)
+	} // end public byte[] fileToBytes(String fin)
 	
 	
 	
@@ -150,11 +150,11 @@ public class JackAnalyzer extends Tokenizer {
 		if(f.exists()){
 			if(!f.delete())
 				System.out.println("WARNING: Could not delete " + this.inFileName + ".xml");
-		}///< end if(f.exists())
+		}// end if(f.exists())
 		else
 			System.out.println("WARNING: " + f.getName() + " DOES NOT exists.");
 		
-	}///< end private void removeExistingOutputFile()
+	}// end private void removeExistingOutputFile()
 	
 	
 	
@@ -180,7 +180,7 @@ public class JackAnalyzer extends Tokenizer {
 		}
 		
 		return fw;
-	}///< end protected void setOutFilePointer()
+	}// end protected void setOutFilePointer()
 	
 	
 	
@@ -201,31 +201,18 @@ public class JackAnalyzer extends Tokenizer {
 		int tokenCheckLength = tokenCheck.length;
 				
 		
-		///< Find the start of tokenCheck
+		// Find the start of tokenCheck
 		for(int i = 0; i < this.jackContent.length; i++){
 			if(this.jackContent[i] == tokenCheck[0]){
 				if(tokenWordCheck(tokenCheck, Arrays.copyOfRange(this.jackContent, i, i + tokenCheckLength)))
 					count++;
-			}///< end if(this.jackContent[i] == tokenCheck[0])
-		}///< end for(int i = 0; i < this.jackContent.length; i++)
+			}// end if(this.jackContent[i] == tokenCheck[0])
+		}// end for(int i = 0; i < this.jackContent.length; i++)
 		
 		
 		return count;
 		
-		
-		
-		//TODO: Delete this test
-				/*String str = null;
-				try {
-					str = new String (tokenCheck, "US-ASCII");
-				} catch (UnsupportedEncodingException e) {
-					///< TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("Contained " + count + " occurances of " + str);
-				*/
-		
-	}///< end public int tokenCount(byte[] tokenCheck)
+	}// end public int tokenCount(byte[] tokenCheck)
 	
 	
 	
@@ -236,31 +223,18 @@ public class JackAnalyzer extends Tokenizer {
 	
 	
 	
+	///< tokenWordCheck(byte[] tokenIn, byte[] arrayIn)
 	/*!
 	 * Check if the remaining tokenIn is contained in the arrayIn
 	 */
 	private boolean tokenWordCheck(byte[] tokenIn, byte[] arrayIn){
 		
-		///< TODO: Delete this useless test
-		///< Print what the rest of the word being checked is:
-		/*String str = null;
-		try {
-			str = new String (tokenIn, "US-ASCII");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		System.out.println("tokenWordCheck - rest of string: " + str);
-		*/
-		
-		
-		
-		
-		///< If tokenIn has no more characters then it has been fully checked
+		// If tokenIn has no more characters then it has been fully checked
 		if(tokenIn.length == 0)
 			return true;
 		
-		///< Compare whether the first characters match
-		///< If so compare the rest of the word, else false
+		// Compare whether the first characters match
+		// If so compare the rest of the word, else false
 		if(tokenIn[0] == arrayIn[0])
 			return tokenWordCheck(Arrays.copyOfRange(tokenIn,1,tokenIn.length), 
 								   Arrays.copyOfRange(arrayIn,1,tokenIn.length)); 

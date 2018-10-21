@@ -1,6 +1,6 @@
 package com.finiteautomaton;
 
-import com.jackanalyzer.Tokenizer;
+import com.jackanalyzer.MachineDescription;
 import java.util.ArrayList;
 import lombok.Data;
 
@@ -22,7 +22,7 @@ public class Simulator{
 	private FiniteAutomaton automaton;				///< Finite automaton for this simulation
 	private ArrayList<String> inputStrings;			///< Strings from parsed input file
 	private ArrayList<String> acceptedStrings;		///< Strings accepted by this simulation
-	private ArrayList<Integer> finalStates;			///< States related to Tokenizer
+	private ArrayList<Integer> finalStates;			///< States related to MachineDescription
 	private Integer finalState;						///< Final state of the machine throughout sim
 	private ArrayList<String> rejectedStrings;		///< Strings not accepted by the FiniteAutomaton
 	private ArrayList <StringResult> stringResults;	///< Container for all string:token pairs
@@ -86,12 +86,11 @@ public class Simulator{
 			StringResult sr = new StringResult ();
 			sr.string = inputString;
 			
-			if(Tokenizer.TokenMap.containsKey(finalState)) {
-				sr.token = Tokenizer.TokenMap.get(finalState);
-			}
-			else {
-				sr.token = "BADTOKEN";
-			}
+			/*
+			 * if FA contains the final state then get the final state token
+			 * otherwise return bad token
+			 */
+			
 				
 			
 			stringResults.add(sr);

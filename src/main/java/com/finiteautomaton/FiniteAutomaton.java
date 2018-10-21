@@ -79,7 +79,22 @@ class FiniteAutomaton {
     		sb.append(s.state + " ");
     	
     	return sb.toString();
-    }// end public String acceptStatesToString() 
+    }// end public String acceptStatesToString()  
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< addAcceptState(Integer i)
+    /*!
+     * Given an integer add it as an accept state
+     */
+    public void addAcceptState(int i){	this.acceptStates.add( new State(i));}
 	
 	
 	
@@ -95,7 +110,7 @@ class FiniteAutomaton {
      * Create the transition table for the FiniteAutomaton.  If the transition
      * already exists add it with the the new final state
      */
-    private void addTransition( State startState, State finalState, Byte symbol){
+    public void addTransition( State startState, State finalState, Byte symbol){
     	
     	// Build the Transition table
     	Transition transition = new Transition(startState,symbol);
@@ -208,6 +223,24 @@ class FiniteAutomaton {
     	System.out.println( sb.toString() );
     	
     }// end public void printStringSelf()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< setAcceptStates(Set<Integer> accepts)
+    /*!
+     * Given a set of integers add them to the accept states
+     */
+    public void setAcceptStates(Set<Integer> accepts){
+    	for(Integer k: accepts)
+    		this.acceptStates.add(new State(k));
+    }// end void setAcceptStates(Set<Integer> accepts)
 	
 	
 	

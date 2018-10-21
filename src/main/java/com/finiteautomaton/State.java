@@ -11,10 +11,10 @@ import lombok.Data;
  * Implements the Comparable interface for sorting later.  
  */
 @Data
-class State implements Comparable<State> {
+public class State implements Comparable<State> {
 
 	
-	public int state;
+	protected int state;
 	
 	
 	

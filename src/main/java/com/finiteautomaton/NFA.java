@@ -22,12 +22,29 @@ public class NFA extends FiniteAutomaton{
 	
 	
 	
-	///< NFA
+	///< NFA()
+	/*!
+	 * Constructor
+	 */
+	public NFA(){
+		super();
+	}// end public NFA() 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< NFA(State startState, String input, int pos)
 	/*!
 	 * "Recursive Implementation of NFAs" from DePaul University
 	 * https://condor.depaul.edu/ichu/csc416/notes/notes3/nfa/nfa.html  
 	 */
 	public NFA(State startState, String input, int pos /**<Position in current string>*/){
+		
 		
 		this.nextStates 	= new ArrayList<State>();
 		this.eplisonTrans 	= new Transition(startState, (byte)96);
@@ -89,7 +106,10 @@ public class NFA extends FiniteAutomaton{
 				else
 					this.setAcceptStatus(false);
 			}// end else --if there is NOT a next symbol then
+			
+			
 			this.setAcceptStatus(false);
+			this.setType();
 	}// end public NFA(State startState, String input, int pos)
 		
 }// end public class NFA extends FiniteAutomaton

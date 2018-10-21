@@ -1,0 +1,475 @@
+package com.jackanalyzer;
+
+
+
+
+
+import lombok.Data;
+import lombok.Getter;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import com.finiteautomaton.*;
+
+
+
+/**
+ * @author andreasslovacek
+ * This class generates the byte byterings for every keyword
+ */
+@Data
+public class MachineDescription {
+	
+	@Getter private HashMap<Byte[], String> Categories;	///< Map of keyword byte[] : token type
+	@Getter private HashMap<Integer, String> AcceptMap;	///< Map of accept state : token type
+	private NFA machine;								///< Machine described by assignment
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< MachineDescription
+	/*!
+	 * Add accept states paired to keywords to AcceptMap   
+	 */
+	public MachineDescription(){
+		this.machine = new NFA();
+		setStates();
+		setAcceptMap();		// Keywords to accept states
+		setAcceptStates();
+		setAlphabet();
+		//TODO: setTransitions();
+		//TODO: setStartState();
+	}// end public MachineDescription()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< createTransition(Byte[] str, int[] inStates, boolean lastEpsilonTransition)
+	/*!
+	 * Given one of the input byte sequences, and states start/end states
+	 * add the transition to the machine
+	 */
+	private void createTransition(Byte[] str, int[] inStates, boolean lastEpsilonTransition){
+		
+		State startState, finalState;
+		Byte symbol;
+		
+		// given arrays of sequences of states and the transition symbols add them to the machine
+		for(int i = 0; i<= inStates.length -2; i++){
+			startState 		= 	new State(inStates[i]);
+			finalState 		= 	new State(inStates[i+1]);
+			
+			if( i == inStates.length -2 && lastEpsilonTransition )
+				symbol = (Byte) Integer.valueOf((byte)96).byteValue();
+			else
+			 	symbol = (Byte) Integer.valueOf(str[i]).byteValue();
+
+			this.machine.addTransition(startState, finalState, symbol);
+		 }// end for(int i = 0; i<= inStates.length -2; i++)
+		
+	}// end void createTransition(Byte[] str, int[] inStates, boolean lastEpsilonTransition)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< createTransitions(Byte[] str, int[] states, boolean lastEpsilonTransition)
+	/*!
+	 * Generate multiple transitions if there are many start-final states
+	 */
+	private void createTransitions(Byte[] str, int[] states, boolean lastEpsilonTransition){
+		
+		int i = 0;
+		
+		while(i < str.length)
+			createTransition(new Byte[]{str[i++]},states,false);
+		
+	}// end void createTransitions(Byte[] str, int[] states, boolean lastEpsilonTransition)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< setAcceptMap
+	/*!
+	 * Each keyword has certain accept states. Set the state number,
+	 * which is an accept state, matched to the keyword 
+	 */
+	private void setAcceptMap(){
+		AcceptMap = new HashMap<Integer, String>();
+		
+		// Integer accept states 2-11
+		for( int i = 2; i <= 11; i++ )
+			AcceptMap.put(i, "INTEGER");
+		
+		
+		// Other keywords only one accept state
+		AcceptMap.put(34, "KW_CONST");
+		AcceptMap.put(48, "KW_TYPE");
+		AcceptMap.put(63, "KW_VARDEC");
+		AcceptMap.put(90, "KW_SUBDEC");
+		AcceptMap.put(111, "KW_VAR");
+		AcceptMap.put(112, "KW_VOID");
+		AcceptMap.put(133, "KW_CLASS");
+		AcceptMap.put(114, "KW_LET");
+		AcceptMap.put(115, "KW_IF");
+		AcceptMap.put(116, "KW_ELSE");
+		AcceptMap.put(122, "KW_WHILE");
+		AcceptMap.put(125, "KW_DO");
+		AcceptMap.put(132, "KW_RETURN");
+		AcceptMap.put(135, "SY_LPAREN");
+		AcceptMap.put(137, "SY_RPAREN");
+		AcceptMap.put(139, "SY_LBRACKET");
+		AcceptMap.put(141, "SY_RBRACKET");
+		AcceptMap.put(143, "SY_LBRACE");
+		AcceptMap.put(145, "SY_RBRACE");
+		AcceptMap.put(147, "SY_SEMI");
+		AcceptMap.put(149, "SY_PERIOD");
+		AcceptMap.put(151, "SY_COMMA");
+		AcceptMap.put(153, "SY_EQ");
+		AcceptMap.put(155, "SY_MINUS");
+		AcceptMap.put(157, "SY_NOT");
+		AcceptMap.put(159, "SY_OP");
+		AcceptMap.put(161, "IDENT");
+		AcceptMap.put(164, "STRING");
+					
+	}// end void setAcceptMap()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< setAcceptStates()
+	/*!
+	 * Add the accept states to the machine
+	 */
+	private void setAcceptStates(){ this.machine.setAcceptStates(AcceptMap.keySet());}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< setAlphabet()
+	/*!
+	 * Add the alphabet in bytes to the machine
+	 */
+	private void setAlphabet(){
+		
+		Set<Byte> temp = new HashSet<Byte>();
+		
+		for(int i = 0; i <= 127; i++)
+			temp.add((Byte)Integer.valueOf(i).byteValue());
+		 
+		this.machine.setAlphabet(temp);
+		
+	}// end void setAlphabet()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< setStates()
+	/*!
+	 * Add all the states from state diagram.
+	 */
+	private void setStates(){
+		
+		Set <State> temp = new HashSet<State>();
+		
+		for(int i=0; i <= 164; i++)
+			temp.add(new State(i));
+		
+		this.machine.setStates(temp);
+		
+	}// end void setStates()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///< setTransitions
+	/*!
+	 *  Create epsilon transitions leaving the start state.
+	 *  Create transitions for each possible keyword
+	 *   
+	 */
+	private void setTransitions(){
+		
+		Categories = new HashMap<Byte[],String>();	///< Keywords for this machine
+		State startState, finalState;				///< Start and end states for transitions added to this machine
+		Byte symbol;								///< Symbol for transitions added to this machine
+		Byte[] byter ;								///< Array for sequences from state diagram
+		int[] states; 								///< States relating to this keyword
+		
+		
+		
+		
+		//==== Epsilon Transitions from start ====
+		int startStates[] = {1,16,35,51,64,91,94,98,102,105,107,117,123,126,134,136,138,140,142,144,146,148,150,152,154,156,159,160,162};
+		 for(int i : startStates){
+			 startState = new State(0);
+			 finalState = new State(i);
+			 symbol = (Byte) Integer.valueOf((byte)96).byteValue();
+			 this.machine.addTransition(startState, finalState, symbol);
+		 }// end for(int i : startStates)
+		
+		
+		
+		
+		//==== KW_CONST ==== 
+		
+		//	true
+		byter 	= new Byte[] 	{'t','r','u','e'};
+		states 	= new int[] 	{16,17,18,19,20,34};
+		Categories.put(byter, "KW_CONST");
+		createTransition(byter, states, true);
+		
+		// false
+		byter 	= new Byte[] 	{'f','a','l','s','e'};
+		states	= new int[] 	{16,21,22,23,24,25,34};
+		Categories.put(byter, "KW_CONST");
+		createTransition(byter, states, true);
+		
+		// null
+		byter 	= new Byte[] 	{'n','u','l','l'};
+		states 	= new int[] 	{16,26,27,28,29,34};
+		Categories.put(byter, "KW_CONST");
+		createTransition(byter, states, true);
+		
+		// this
+		byter 	= new Byte[] 	{'t','h','i','s'};
+		states 	= new int[] 	{16,30,31,32,33,34};
+		Categories.put(byter, "KW_CONST");
+		createTransition(byter, states, true);
+		
+		
+		
+		//==== KW_TYPE ==== 
+		
+		//int
+		byter 	= new Byte[] 	{'i','n','t'};
+		states 	= new int[] 	{35,36,37,38,48};
+		Categories.put(byter, "KW_TYPE");
+		//TODO: Transition
+		
+		//char
+		byter 	= new Byte[] 	{'c','h','a','r'};
+		states 	= new int[] 	{35,39,40,41,42,48};
+		Categories.put(byter, "KW_TYPE");
+		
+		//boolean
+		byter 	= new Byte[] 	{'b','o','o','l','e','a','n'};
+		states 	= new int[] 	{35,43,44,45,46,49,50,47,48};
+		Categories.put(byter, "KW_TYPE");
+		
+		
+		
+		//==== KW_VARDEC ==== 
+		//static
+		byter 	= new Byte[] 	{'s','t','a','t','i','c'};
+		states 	= new int[] 	{51,52,53,54,55,56,57,63};
+		Categories.put(byter, "KW_VARDEC");
+		
+		//field
+		byter 	= new Byte[] 	{'f','i','e','l','d'};
+		states 	= new int[] 	{51,58,59,60,61,62,63};
+		Categories.put(byter, "KW_VARDEC");
+		
+		
+		
+		//==== KW_SUBDEC ==== 
+		//constructor
+		byter 	= new Byte[] 	{'c','o','n','s','t','r','u','c','t','o','r'};
+		states 	= new int[] 	{64,65,66,67,68,69,70,71,72,73,74,75,90};
+		Categories.put(byter, "KW_SUBDEC");
+		
+		//function
+		byter 		= new Byte[] 	{'f','u','n','c','t','i','o','n'};
+		Categories.put(byter, "KW_SUBDEC");
+		
+		//method
+		byter 		= new Byte[] 	{'m','e','t','h','o','d'};
+		Categories.put(byter, "KW_SUBDEC");
+		
+		
+		
+		
+		//==== KW_VAR ==== 
+		byter 		= new Byte[] 	{'v','a','r'};
+		Categories.put(byter, "KW_VAR");
+
+		
+		
+		//==== KW_VOID ==== 
+		byter 		= new Byte[] 	{'v','o','i','d'};
+		Categories.put(byter, "KW_VAR");
+
+		
+		
+		//==== KW_CLASS ==== 
+		byter 		= new Byte[] 	{'c','l','a','s','s'};
+		Categories.put(byter, "KW_CLASS");
+		
+		
+		
+		//==== KW_LET ==== 
+		byter 		= new Byte[] 	{'l','e','t'};
+		Categories.put(byter, "KW_LET");
+
+		
+		
+		//==== KW_IF ==== 
+		byter 		= new Byte[] 	{'i','f'};
+		Categories.put(byter, "KW_IF");
+		
+		
+		
+		//==== KW_ELSE ==== 
+		byter 		= new Byte[] 	{'e','l','s','e'};
+		Categories.put(byter, "KW_ELSE");
+		
+		
+		
+		//==== KW_WHILE ==== 
+		byter 		= new Byte[] 	{'w','h','i','l','e'};
+		Categories.put(byter, "KW_WHILE");
+		
+		
+		
+		//==== KW_DO ==== 
+		byter 		= new Byte[] 	{'d','o'};
+		Categories.put(byter, "KW_DO");
+		
+		
+		
+		//==== KW_RETURN ==== 
+		byter 		= new Byte[] 	{'r','e','t','u','r','n'};
+		Categories.put(byter, "KW_RETURN");
+		
+		
+		
+		//==== SY_LPAREN ==== 
+		byter 		= new Byte[] 	{'('};
+		Categories.put(byter, "SY_LPAREN");
+		
+		
+		
+		//==== SY_RPAREN ==== 
+		byter 		= new Byte[] 	{')'};
+		Categories.put(byter, "SY_RPAREN");
+		
+		
+		
+		//==== SY_LBRACKET ==== 
+		byter 		= new Byte[] 	{'['};
+		Categories.put(byter, "SY_LBRACKET");
+		
+		
+		
+		//==== SY_RBRACKET ==== 
+		byter 		= new Byte[] 	{']'};
+		Categories.put(byter, "SY_RBRACKET");
+			
+		
+		
+		//==== SY_LBRACE ==== 
+		byter 		= new Byte[] 	{'{'};
+		Categories.put(byter, "SY_LBRACE");
+		
+		
+		
+		//==== SY_RBRACE ==== 
+		byter 		= new Byte[] 	{'}'};
+		Categories.put(byter, "SY_RBRACE");
+		
+		
+		
+		//==== SY_SEMI ==== 
+		byter 		= new Byte[] 	{';'};
+		Categories.put(byter, "SY_SEMI");
+		
+		
+		
+		//==== SY_PERIOD ==== 
+		byter 		= new Byte[] 	{'.'};
+		Categories.put(byter, "SY_PERIOD");
+		
+		
+		
+		//==== SY_COMMA ==== 
+		byter 		= new Byte[] 	{','};
+		Categories.put(byter, "SY_COMMA");
+		
+		
+		
+		//==== SY_EQ ==== 
+		byter 		= new Byte[] 	{'='};
+		Categories.put(byter, "SY_EQ");
+		
+		
+		
+		//==== SY_MINUS ==== 
+		byter 		= new Byte[] 	{'-'};
+		Categories.put(byter, "SY_MINUS");
+		
+		
+		
+		//==== SY_NOT ==== 
+		byter 		= new Byte[] 	{'~'};
+		Categories.put(byter, "SY_NOT");
+		
+		
+		
+		//==== SY_OP ==== 
+		byter 		= new Byte[] 	{'<','>','|','&','/', '*','+'};
+		Categories.put(byter, "SY_OP");
+		
+			
+
+	}// end MachineDescription()
+
+}// end class MachineDescription
