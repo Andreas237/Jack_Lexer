@@ -75,7 +75,9 @@ public class Simulator{
 	 * tokens associated with those strings; states of the machine
 	 */
 	private void simulate(){
+		MachineDescription tempMachine = new MachineDescription();
 		for(String inputString: inputStrings){
+			
 			if( new NFA(new State(0),inputString,0).getAcceptStatus() == true) {
 				acceptedStrings.add(inputString);
 			}
@@ -83,20 +85,25 @@ public class Simulator{
 				rejectedStrings.add(inputString);
 			}
 			
-			StringResult sr = new StringResult ();
-			sr.string = inputString;
+			
+			
 			
 			/*
-			 * if FA contains the final state then get the final state token
-			 * otherwise return bad token
+			 * Fill in StringResults. if FA contains the final state then get 
+			 * the final state token otherwise return bad token
 			 */
-			
+			StringResult sr = new StringResult ();
+			sr.string = inputString;
+			if(tempMachine.getAcceptMap().containsKey(finalState))
+				sr.token = tempMachine.getAcceptMap().get(finalState);
+			else
+				sr.token = "BAD TOKEN";
 				
 			
 			stringResults.add(sr);
 			finalStates.add(finalState);
 			finalState = null;
-		}
-	}
+		}// end for(String inputString: inputStrings)
+	}// end void simulate()
 	
 }// end public class Simulator
