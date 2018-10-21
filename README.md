@@ -18,5 +18,8 @@ Date: 21 October 2018
 These can be anywhere in the PJ03 Directory, must end in *_.jack_* and must not have 
 *test* in the name.
 
-### Out Files
-*_.tok_* and *_.log_* files will be generated in *_PJ03/results/_*
+### results/
+Contains the *_.tok_* and *_.log_* files 
+
+
+### code/ 

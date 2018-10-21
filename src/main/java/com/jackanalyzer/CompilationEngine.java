@@ -3,8 +3,8 @@ package com.jackanalyzer;
 import lombok.Data;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 ///< CompilationEngine
 /*!
@@ -14,10 +14,9 @@ import java.util.ArrayList;
 public class CompilationEngine{
 
 	
-	ArrayList<File> jackFiles;			///< Jack input file names
-	ArrayList<File> logFiles;			///< Log output file names
-	ArrayList<File> tokFiles;			///< Token output file names
-	ArrayList<String> files;			///< String input file names
+	ArrayList<File> jackFiles;		///< Jack input file names
+	HashMap<File,File> logFiles;	///< Log output file names
+	HashMap<File,File> tokFiles;	///< Token output file names
 	ArrayList<String> inputStrings;	///< Read from file
 	
 
@@ -36,16 +35,34 @@ public class CompilationEngine{
 	 */
 	public CompilationEngine(){
 		jackFiles = new ArrayList<File>();
-		logFiles = new ArrayList<File>();
-		tokFiles = new ArrayList<File>();
+		logFiles = new HashMap<File,File>();
+		tokFiles = new HashMap<File,File>();
 		//TODO: setup filenames
 		setFiles();
-		//TODO: setup input/output file locations
-		//TODO: .tok and .jack extensions
-		//TODO: create the filename
+		checkJackFilesSize();
+
 		//TODO: parse file into inputStrings
 		//TODO: 
 	}// end public CompilationEngine()
+	
+
+
+
+
+
+
+
+	///< checkJackFilesSize()
+	/*!
+	 * Exit with error if no files were gathered for processing
+	 */
+	private void checkJackFilesSize(){
+		if( jackFiles.size() == 0){
+			System.out.println("ERROR: No .jack files found in the project path!");
+			System.out.println("Add .jack files anywhere in the project directory to solve.");
+				System.exit(1);
+		}// end if( jackFiles.size() == 0)
+	}// end void checkJackFilesSize()
 	
 
 
@@ -86,17 +103,24 @@ public class CompilationEngine{
 	 * Create files for .tok and .log corresponding to the input jackfiles
 	 */
 	private void setFiles(){
-		File currentDir = new File("./");
+		
+		File currentDir = new File("./");		///< Directory to search for .jackfiles
+		File tempTok, tempLog;					// temp file
+
+		// Get the jack files the project directory
 		jackFiles = getAllJackFiles(currentDir);
 		
-		File temp;
-		for (File f : jackFiles){
-			temp = new File("./results/" + f.getName().replace(".jack", ".tok"));
-			tokFiles.add(temp);
-			temp = new File("./results/" + f.getName().replace(".jack", ".log"));
-			logFiles.add(temp);
+		
+		// For every .jack create a corresponding output file
+		for (File jack : jackFiles){
+			tempTok = new File("./results/" + jack.getName().replace(".jack", ".tok"));
+			tokFiles.put(jack, tempTok);
+			tempLog = new File("./results/" + jack.getName().replace(".jack", ".log"));
+			logFiles.put(jack, tempLog);
+
 		}// end for (File f : jackFiles)
 		
+	
 	}// end void setFiles()
 	
 	

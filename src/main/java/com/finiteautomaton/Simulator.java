@@ -25,7 +25,7 @@ public class Simulator{
 	private ArrayList<Integer> finalStates;			///< States related to MachineDescription
 	private Integer finalState;						///< Final state of the machine throughout sim
 	private ArrayList<String> rejectedStrings;		///< Strings not accepted by the FiniteAutomaton
-	private ArrayList <StringResult> stringResults;	///< Container for all string:token pairs
+	private ArrayList <ResultPair> resultPair;	///< Container for all string:token pairs
 
 
 
@@ -33,14 +33,14 @@ public class Simulator{
 
 
 
-	///< StringResult
+	///< ResultPair
 	/*!
 	 * Container for .tok output
 	 */
-	public class StringResult{
+	public class ResultPair{
 		public String string;
 		public String token;
-	}// end public class StringResult
+	}// end public class ResultPair
 
 
 
@@ -57,7 +57,7 @@ public class Simulator{
 		this.inputStrings= inputStrings;
 		acceptedStrings = new ArrayList<String>();
 		rejectedStrings = new ArrayList<String>();
-		stringResults = new ArrayList<StringResult>();
+		resultPair = new ArrayList<ResultPair>();
 		finalStates = new ArrayList<Integer>();
 		finalState = null;
 		simulate();
@@ -89,18 +89,18 @@ public class Simulator{
 			
 			
 			/*
-			 * Fill in StringResults. if FA contains the final state then get 
+			 * Fill in ResultPairs. if FA contains the final state then get 
 			 * the final state token otherwise return bad token
 			 */
-			StringResult sr = new StringResult ();
-			sr.string = inputString;
+			ResultPair pair = new ResultPair ();
+			pair.string = inputString;
 			if(tempMachine.getAcceptMap().containsKey(finalState))
-				sr.token = tempMachine.getAcceptMap().get(finalState);
+				pair.token = tempMachine.getAcceptMap().get(finalState);
 			else
-				sr.token = "BAD TOKEN";
+				pair.token = "BAD TOKEN";
 				
 			
-			stringResults.add(sr);
+			resultPair.add(pair);
 			finalStates.add(finalState);
 			finalState = null;
 		}// end for(String inputString: inputStrings)
