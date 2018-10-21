@@ -11,7 +11,21 @@ Date: 21 October 2018
 
 
 
-## File
+## Classes
+
+
+### FiniteAutomaton
+Simulates a finite automaton, with default type DFA.
+
+### NFA
+Simulates a non-deterministic finite automaton, and implements a recursive approach found 
+[here](https://condor.depaul.edu/ichu/csc416/notes/notes3/nfa/nfa.html)
+
+### JackProcessor
+Reads the input .jack character by character.  The state diagram of this machine is *Figure: JackProcessor*.
+
+
+## Files
 
 
 ### Input Jack Files

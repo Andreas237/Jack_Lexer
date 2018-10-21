@@ -40,6 +40,10 @@ public class CompilationEngine{
 		//TODO: setup filenames
 		setFiles();
 		checkJackFilesSize();
+		
+		//TODO: Call JackProcessor() to get input strings
+		//TODO: Call Tokenizer()
+		//TODO: Call logger()
 
 		//TODO: parse file into inputStrings
 		//TODO: 
