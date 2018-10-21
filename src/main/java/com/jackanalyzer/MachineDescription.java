@@ -466,6 +466,7 @@ public class MachineDescription {
 		
 		//==== SY_OP ==== 
 		byter 		= new Byte[] 	{'<','>','|','&','/', '*','+'};
+		states 		= new int[] 		{158,159};
 		Categories.put(byter, "SY_OP");
 		
 			

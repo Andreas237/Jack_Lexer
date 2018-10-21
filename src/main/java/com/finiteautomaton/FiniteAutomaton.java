@@ -29,7 +29,6 @@ class FiniteAutomaton {
     protected HashMap<Transition,Set<State>> transitions;	///< delta transition table QxSigma->Q
     private State startState;								///< q0 start state
     private Set <State> acceptStates;						///< F accept states
-    private Gson GSON;										///< JSON representation of the class
     private boolean acceptStatus;							///< Accept status of the FA given an input string
     private boolean isValid;								///< Is this machine valid?
     private String type;									///< Default FiniteAutomaton type is DFA
@@ -52,7 +51,6 @@ class FiniteAutomaton {
         
     	this.acceptStates = new HashSet<State>();
         this.alphabet = new HashSet<Byte>();
-        this.GSON = new GsonBuilder().setPrettyPrinting().create();
         this.isValid = true;
         this.startState = new State(0);
         this.states = new HashSet<State>();
@@ -181,18 +179,6 @@ class FiniteAutomaton {
 	
 	///< getCountState
     protected int getCountState(){ return this.states.size();}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	///< printJsonSelf
-    public void printJsonSelf(){	System.out.print( this.GSON.toJson(this) );}
 	
 	
 	
