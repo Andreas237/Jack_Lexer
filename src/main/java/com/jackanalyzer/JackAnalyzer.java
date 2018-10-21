@@ -42,12 +42,12 @@ public class JackAnalyzer extends MachineDescription {
 	public JackAnalyzer(String fin /**<Input filename to be passed from the command line>*/) {
 		
 		// Open the jack file for reading, error if incorrect file type
+		System.out.println("Going to get Jack");
 		this.jackContent = this.fileToBytes(fin);
 		if(getJackContent() == null)
 			System.out.println("Failed to read anything from " + fin);
-		else{
+		else
 			System.out.println("read a file");
-		}// end else
 		
 		
 		
@@ -77,6 +77,7 @@ public class JackAnalyzer extends MachineDescription {
 		
 		// Close the file pointers
 		try {
+			System.out.println("Trying to close the file");
 			this.outFile.close();
 		} // end try
 		catch (IOException e) {

@@ -52,7 +52,7 @@ public class Simulator{
 	/*!
 	 * Initialize the member variables, then run the simulation
 	 */
-	public Simulator(FiniteAutomaton automaton, ArrayList<String> inputStrings){
+	public Simulator(NFA automaton, ArrayList<String> inputStrings){
 		this.automaton = automaton;
 		this.inputStrings= inputStrings;
 		acceptedStrings = new ArrayList<String>();

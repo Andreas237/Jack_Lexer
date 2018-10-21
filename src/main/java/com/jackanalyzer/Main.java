@@ -20,7 +20,7 @@ class Main {
 	 * @param args should have length 2, with args[1] being an input file
 	 */
 	public static void main(String[] args) {
-		
+
 		// Exit with error if no input file specified
 		if( args.length != 1 ) {
 			System.out.println("ERROR:\tSpecify 1 input file");
@@ -30,27 +30,14 @@ class Main {
 			System.out.println("Received " + args[0] + " as input jack file.");
 		}// end else
 		
-		
 		// If the the infile exists run the simulation
 		JackAnalyzer ja = new JackAnalyzer(args[0]);
 		ja.tokenCount("int".getBytes());
 		
+		System.out.println("Try compiling");
+		CompilationEngine ce = new CompilationEngine();
+
 		
-		
-		//TODO: remove this junk
-		/*
-		byte [] sa, sb;
-		byte [] a = {'t','r','u','e'};
-		byte [] b = "true".getBytes();
-		
-		sa = Arrays.copyOfRange(a, 0, 0);
-		sb = Arrays.copyOfRange(b, 0, 0);
-		System.out.println("Comparing bytes: ");
-		System.out.println( Arrays.equals(sa, sb));
-		System.out.println( Arrays.equals(a,b));
-		*/
-		char c = (char)( (byte)(96) & 0xFF);
-		System.out.println(c);
 		
 		
 	}// end public static void Main(String[] args)

@@ -69,7 +69,7 @@ public class MachineDescription {
 		Byte symbol;
 		
 		// given arrays of sequences of states and the transition symbols add them to the machine
-		for(int i = 0; i<= inStates.length -2; i++){
+		for(int i = 0; i<= inStates.length-2; i++){
 			startState 		= 	new State(inStates[i]);
 			finalState 		= 	new State(inStates[i+1]);
 			
