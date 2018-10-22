@@ -20,7 +20,7 @@ import com.finiteautomaton.*;
  * This class generates the byte byterings for every keyword
  */
 @Data
-public class MachineDescription {
+public class MachineDescription_Backup {
 	
 	@Getter private HashMap<Byte[], String> Categories;	///< Map of keyword byte[] : token type
 	@Getter public static HashMap<Integer, String> AcceptMap;	///< Map of accept state : token type
@@ -40,7 +40,7 @@ public class MachineDescription {
 	/*!
 	 * Add accept states paired to keywords to AcceptMap   
 	 */
-	public MachineDescription(){
+	public MachineDescription_Backup(){
 		this.machine = new NFA();
 		setStates();
 		setAcceptMap();		// Keywords to accept states

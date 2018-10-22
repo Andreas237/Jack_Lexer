@@ -109,17 +109,22 @@ public class FiniteAutomaton {
      * already exists add it with the the new final state
      */
     public void addTransition( State startState, State finalState, Byte symbol){
-    	
     	// Build the Transition table
     	Transition transition = new Transition(startState,symbol);
     	// if the tranisition is in the table add a new final state with it
-        if( this.transitions.containsKey(transition) )
+        if( this.transitions.containsKey(transition) ){
         	this.transitions.get(transition).add(finalState);
+        	//System.out.println("transitions contain key " + transition.toString() + "\t\tWith states:" + this.transitions.get(transition).toString());
+        }
         else{	// add the tranisition and final state
         	this.transitions.put(transition, new HashSet<State>());
         	this.transitions.get(transition).add(finalState);
+        	/*
+        	System.out.print("transitions didn't contain " + transition.toString());
+        	System.out.println("\t\tAdding states:" + this.transitions.get(transition).toString());
+        	*/
         }// end else
-        	
+        
     }//end private void addTransition( State startState, State finalState, Byte symbol)
 	
 	
@@ -352,7 +357,7 @@ public class FiniteAutomaton {
     		
     		finalStates.append("]"); // 
     		
-    		finalStates.delete(count, count);
+    		finalStates.delete(count+1, count);
     		
     		sb.append(t.currentState.state + "," + symbol + "," + finalStates + "\n" );
     		
