@@ -33,11 +33,12 @@ class JackProcessor{
 	/*!
 	 * Given an input file get the string tokens from it.
 	 */
-	public JackProcessor(File inJack){
+	public JackProcessor(File inJack) throws IOException{
 		symbols = new HashSet<Character>();
 		setSymbols();
 		setFin(inJack);
 		stringTokens = new ArrayList<String>();
+		parseInput();
 	}// end JackProcessor(File inJack)
 	
 
@@ -52,7 +53,7 @@ class JackProcessor{
 	 * This could be moved into a machine definition file and read into the FiniteAutomaton
 	 * but I'm pressed for time and thus doing it explicitly.
 	 */
-	public void parseInput() throws IOException{
+	private void parseInput() throws IOException{
 		
 		StringBuilder sb = new StringBuilder();		///< Read file into SB
 		String fileString;							// easer to read positionally from strings than SB
@@ -74,8 +75,8 @@ class JackProcessor{
     	
     	
     	for(int i = 0; i < fileString.length(); i++){
+    		
     		c = fileString.charAt(i);
-    			
     		
     		if(currentState == 0){
     			if(c == '\n' || c == ' ')
@@ -173,8 +174,7 @@ class JackProcessor{
     		if(currentState == 9){
     			if(symbols.contains(c)){
     				finalState = 0;
-        			stringTokens.add(str.trim());
-    				str = ""+ c;
+    				str = str + c;
         			stringTokens.add(str.trim());
         			str = "";
     			}// end if(symbols.contains(c)) 
@@ -184,7 +184,7 @@ class JackProcessor{
         			str = "";
     			}// end else if(c == ' ' || c == '\n') 
     			else{
-    				finalState = 8;
+    				finalState = 9;
     				str = str + c;
     			}// end else
     		}// end if(currentState == 9)
@@ -208,6 +208,7 @@ class JackProcessor{
     		// No 11 moves
     			
     		currentState = finalState;
+    		
         }// end for(int i = 0; i < fileString.length(); i++)
        
 

@@ -45,7 +45,6 @@ public class MachineDescription {
 		setAcceptStates();
 		setAlphabet();
 		setTransitions();
-		//TODO: setStartState();
 	}// end public MachineDescription()
 	
 	

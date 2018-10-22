@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
  * This class implements States, Alphabet, Transitions, and validity of a finite automaton
  */
 @Data
-class FiniteAutomaton {
+public class FiniteAutomaton {
 
 	
 	private Set<Byte> alphabet;								///< Sigma alphabet

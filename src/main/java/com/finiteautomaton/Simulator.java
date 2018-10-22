@@ -19,7 +19,7 @@ import lombok.Data;
 public class Simulator{
 
 	
-	private FiniteAutomaton automaton;				///< Finite automaton for this simulation
+	private NFA automaton;							///< Finite automaton for this simulation
 	private ArrayList<String> inputStrings;			///< Strings from parsed input file
 	private ArrayList<String> acceptedStrings;		///< Strings accepted by this simulation
 	private ArrayList<Integer> finalStates;			///< States related to MachineDescription
@@ -77,15 +77,11 @@ public class Simulator{
 	private void simulate(){
 		MachineDescription tempMachine = new MachineDescription();
 		for(String inputString: inputStrings){
-			
-			if( new NFA(new State(0),inputString,0).getAcceptStatus() == true) {
+			if( new NFA(new State(0),inputString,0).getAcceptStatus() == true)
 				acceptedStrings.add(inputString);
-			}
-			else {
+			else
 				rejectedStrings.add(inputString);
-			}
-			
-			
+
 			
 			
 			/*

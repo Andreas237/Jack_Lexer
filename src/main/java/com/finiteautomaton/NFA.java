@@ -50,7 +50,7 @@ public class NFA extends FiniteAutomaton{
 		this.eplisonTrans 	= new Transition(startState, (byte)96);
 
 		// for each eplison transition from state A to some state B do
-		if(this.transitions.containsKey(eplisonTrans) ) {
+		if(this.transitions.containsKey(eplisonTrans)){
 			
 			// Wait until needed to define
 			nextStates.addAll(this.transitions.get(eplisonTrans));
@@ -58,10 +58,11 @@ public class NFA extends FiniteAutomaton{
 			
 			// Process epsilon transitions
 			for(State nextState: nextStates){
-			
+				
 				// if nfa (B) then return True
 				// Recurse through the input string checking the accept status
-				if(new NFA(nextState, input, pos).getAcceptStatus() == true){
+				if(new NFA(nextState, input, pos+1).getAcceptStatus() == true){
+					
 					this.setAcceptStatus(true);
 				}// end if(new NFA(nextState, input, pos).getAcceptStatus() == true)
 	        

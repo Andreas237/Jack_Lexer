@@ -3,8 +3,12 @@ package com.jackanalyzer;
 import lombok.Data;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.finiteautomaton.NFA;
+import com.finiteautomaton.Simulator;
 
 ///< CompilationEngine
 /*!
@@ -33,20 +37,44 @@ public class CompilationEngine{
 	 * Simulate an NFA.
 	 * Write the output files.
 	 */
+	@SuppressWarnings("unused")
 	public CompilationEngine(){
 		jackFiles = new ArrayList<File>();
 		logFiles = new HashMap<File,File>();
 		tokFiles = new HashMap<File,File>();
-		//TODO: setup filenames
+		
+		
+		// Setup filenames and check that they were read in
 		setFiles();
 		checkJackFilesSize();
 		
-		//TODO: Call JackProcessor() to get input strings
-		//TODO: Call Tokenizer()
-		//TODO: Call logger()
+		// Create a machine to run the thing
+		NFA machine = new NFA();
+		Simulator sim;
+		Tokenizer toker;
+		Logger loggins;
+		
 
-		//TODO: parse file into inputStrings
-		//TODO: 
+		
+		
+		/*For every jack file
+		 * Get the input strings
+		 * run a simulation of the PJ03 machine description and the input strings
+		*/	
+		for( File inJack : jackFiles){
+			try{
+				inputStrings = new JackProcessor(inJack).getStringTokens();
+				// System.out.println("Got " + inputStrings.size() + "input strings for " + inJack.getName() );
+				sim = new Simulator(machine, inputStrings);
+				toker = new Tokenizer(tokFiles.get(inJack), sim.getResultPair());
+				loggins = new Logger(logFiles.get(inJack), sim);
+			}// end try
+			catch (IOException e){
+				System.out.println("Error with JackProcessor for file " + inJack.getName());
+				e.printStackTrace();
+			}// end catch (IOException e) 
+		}// end for( File inJack : jackFiles)
+
 	}// end public CompilationEngine()
 	
 
